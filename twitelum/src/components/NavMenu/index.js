@@ -1,31 +1,34 @@
-import React, { Component } from 'react';
-import navMenuStyles from "./navMenu.module.css"
+import React, { Component } from "react";
+import navMenuStyles from "./navMenu.module.css";
 
-class NavMenu extends Component {
-
+export default class NavMenu extends Component {
   render() {
     return (
-      <nav className={navMenuStyles.navMenu} >
+      <nav className={navMenuStyles.navMenu}>
         <ul className={navMenuStyles.navMenu__lista}>
           <li className={navMenuStyles.navMenu__item}>
-            <a className={navMenuStyles.navMenu__link}>
+            <a className={navMenuStyles.navMenu__link} href="/">
               Bem vindo(a): <br />
               <strong>{this.props.usuario}</strong>
             </a>
           </li>
           <li className={navMenuStyles.navMenu__item}>
-            <a className={navMenuStyles.navMenu__link} href="">Página Inicial</a>
+            <a className={navMenuStyles.navMenu__link} href="/">
+              Página Inicial
+            </a>
           </li>
           <li className={navMenuStyles.navMenu__item}>
-            <a className={navMenuStyles.navMenu__link}>Hashtags</a>
+            <a className={navMenuStyles.navMenu__link} href="/hashtags">
+              Hashtags
+            </a>
           </li>
           <li className={navMenuStyles.navMenu__item}>
-            <a className={navMenuStyles.navMenu__link}>Logout</a>
+            <a className={navMenuStyles.navMenu__link} href="/logout">
+              Logout
+            </a>
           </li>
         </ul>
-      </nav >
-    )
+      </nav>
+    );
   }
 }
-
-export default NavMenu
