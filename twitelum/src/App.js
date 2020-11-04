@@ -10,7 +10,31 @@ class App extends Component {
   constructor(){
     super()
     this.state={
-      novoTweet: ""
+      novoTweet: "",
+      tweets: []
+    }
+  }
+
+  adicionaTweet = (infosDoEvento) => {
+    infosDoEvento.preventDefault()
+    if( this.state.novoTweet.length > 0 ){
+      this.setState({
+        tweets: [this.state.novoTweet, ...this.state.tweets ],
+        novoTweet: ""
+      })
+    }
+  }
+
+  renderTweets = (tweets) => {
+    if(this.state.tweets.length > 0){
+      return this.state.tweets.map( (tweetInfo,index) => {
+        return <Tweet
+          texto={tweetInfo}
+          key={tweetInfo + index}/>
+      })
+    }
+    else{
+      return <h3>Crie um novo tweet!</h3>
     }
   }
 
@@ -23,7 +47,9 @@ class App extends Component {
         <div className="container">
             <Dashboard>
                 <Widget>
-                    <form className="novoTweet">
+                    <form
+                    className="novoTweet"
+                    onSubmit={ this.adicionaTweet }>
                         <div className="novoTweet__editorArea">
                             <span className={
                               `novoTweet__status
@@ -55,7 +81,7 @@ class App extends Component {
             <Dashboard posicao="centro">
                 <Widget>
                     <div className="tweetsArea">
-                        <Tweet />
+                     { this.renderTweets(this.state.tweets) }
                     </div>
                 </Widget>
             </Dashboard>
