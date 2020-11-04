@@ -1,22 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import App from './App';
-import Sobre from './Sobre';
+import './index.css';
 import reportWebVitals from './reportWebVitals';
-
-function roteia(endereco){
-  console.log("ASDASDASDADS",endereco)
-  if(endereco	===	'/sobre')	{
-    return <Sobre	/>
-    }	else	{
-    return <App	/>
-    }
-}
+import Sobre from './Sobre';
 
 ReactDOM.render(
   <React.StrictMode>
-    { roteia(window.location.pathname) }
+    <BrowserRouter>
+      <Switch>
+        <Route path="/sobre" component={Sobre}/>
+        <Route path="*" component={App}/>
+      </Switch>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );
