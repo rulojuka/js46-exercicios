@@ -1,10 +1,19 @@
 import React, { Component, Fragment } from 'react'
 import Cabecalho from '../../components/Cabecalho'
 import Widget from '../../components/Widget'
+import { NotificacaoContext } from '../../context/NotificacaoContext'
 
 import './loginPage.css'
 
 class LoginPage extends Component {
+    static contextType = NotificacaoContext;
+    
+    fazLogin = (evento) => {
+        evento.preventDefault()
+        this.context.setMsg("Bem vindo a Twitelum!!!");
+        this.props.history.push('/')
+    }
+    
     render() {
         return (
             <Fragment>
@@ -13,7 +22,8 @@ class LoginPage extends Component {
                     <div className="container">
                         <Widget>
                             <h2 className="loginPage__title">Seja bem vindo!</h2>
-                            <form className="loginPage__form" action="/">
+                            <form className="loginPage__form" action="/"
+                                onSubmit={this.fazLogin}>
                                 <div className="loginPage__inputWrap">
                                     <label className="loginPage__label" htmlFor="login">Login</label> 
                                     <input className="loginPage__input" type="text" id="login" name="login"/>

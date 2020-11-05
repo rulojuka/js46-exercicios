@@ -15,11 +15,14 @@ import "./assets/css/novoTweet.css";
 import * as serviceWorker from "./serviceWorker";
 import Roteamento from "./routes";
 import { BrowserRouter } from "react-router-dom";
+import { NotificacaoContextProvider } from "./context/NotificacaoContext";
 
 ReactDOM.render(
-  <BrowserRouter>
-     <Roteamento />
-  </BrowserRouter>,
+  <NotificacaoContextProvider>
+    <BrowserRouter>
+        <Roteamento />
+    </BrowserRouter>
+  </NotificacaoContextProvider>,
   document.getElementById("root")
   );
 
