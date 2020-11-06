@@ -10,8 +10,44 @@ class LoginPage extends Component {
     
     fazLogin = (evento) => {
         evento.preventDefault()
-        this.context.setMsg("Bem vindo a Twitelum!!!");
-        this.props.history.push('/')
+
+        const dadosDeLogin = {
+            login: this.inputLogin.value,
+            senha: this.inputSenha.value
+        }
+
+        const URL = "https://twitelum-api.herokuapp.com/login"
+        const objeto = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(dadosDeLogin)
+        }
+
+        fetch(URL, objeto)
+        .then(async (responseDoServer) => {
+            if(!responseDoServer.ok){
+                const respostaDeErroDoServidor = await responseDoServer.json();
+                const errorObj = Error(respostaDeErroDoServidor.message)
+                errorObj.status = responseDoServer.status
+                throw errorObj
+            }
+            return responseDoServer.json()
+        })
+        .then( (dadosDoServidorEmObj =>{
+            const token = dadosDoServidorEmObj.token
+            if(token){
+                localStorage.setItem("TOKEN",token)
+                this.props.history.push('/')
+                this.context.setMsg("Bem vindo a Twitelum!!!");
+            }
+        }))
+        .catch( (err) =>{
+            console.error(`Erro ${err.status}.`,err.message)
+            this.context.setMsg(err.message);
+        })
+
     }
     
     render() {
@@ -26,11 +62,11 @@ class LoginPage extends Component {
                                 onSubmit={this.fazLogin}>
                                 <div className="loginPage__inputWrap">
                                     <label className="loginPage__label" htmlFor="login">Login</label> 
-                                    <input className="loginPage__input" type="text" id="login" name="login"/>
+                                    <input ref={ (inputLogin) => this.inputLogin = inputLogin } className="loginPage__input" type="text" id="login" name="login"/>
                                 </div>
                                 <div className="loginPage__inputWrap">
                                     <label className="loginPage__label" htmlFor="senha">Senha</label> 
-                                    <input className="loginPage__input" type="password" id="senha" name="senha"/>
+                                    <input ref={ (inputSenha) => this.inputSenha = inputSenha } className="loginPage__input" type="password" id="senha" name="senha"/>
                                 </div>
                                 {/* <div className="loginPage__errorBox">
                                     Mensagem de erro!
