@@ -5,6 +5,7 @@ import Dashboard from '../../components/Dashboard'
 import Widget from '../../components/Widget'
 import TrendsArea from '../../components/TrendsArea'
 import Tweet from '../../components/Tweet'
+import { TweetService } from '../../services/TweetService';
 
 class HomePage extends Component {
   constructor() {
@@ -19,16 +20,7 @@ class HomePage extends Component {
     infosDoEvento.preventDefault()
 
     if (this.state.novoTweet.length > 0) {
-      fetch(`https://twitelum-api.herokuapp.com/tweets?X-AUTH-TOKEN=${localStorage.getItem('TOKEN')}`, {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json'
-        },
-        body: JSON.stringify({ conteudo: this.state.novoTweet })
-      })
-        .then((respostaDoServer) => {
-          return respostaDoServer.json()
-        })
+      TweetService.adiciona(this.state.novoTweet)
         .then((tweetVindoDoServidor) => {
           this.setState({
             tweets: [tweetVindoDoServidor, ...this.state.tweets],
@@ -54,8 +46,7 @@ class HomePage extends Component {
   }
 
   componentDidMount() {
-    fetch(`https://twitelum-api.herokuapp.com/tweets?X-AUTH-TOKEN=${localStorage.getItem('TOKEN')}`)
-      .then(response => response.json())
+    TweetService.busca()
       .then((tweets) => {
         this.setState({
           tweets
