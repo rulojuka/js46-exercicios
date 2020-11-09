@@ -10,7 +10,7 @@ class Cabecalho extends Component {
                     <h1 className="cabecalho__logo">
                         <a href="/">Twitelum</a>
                     </h1>
-                    { this.props.children }
+                    {this.props.children}
                 </div>
             </header>
         )

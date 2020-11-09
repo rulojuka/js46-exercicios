@@ -7,15 +7,15 @@ import LoginPage from "./pages/LoginPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 
 class PrivateRoute extends React.Component {
-  estaAutenticado = () =>{
+  estaAutenticado = () => {
     return localStorage.getItem("TOKEN")
   }
 
-  render(){
-    const	{	component:	ComponenteQueVeioNoParametro,	...props	}	=	this.props
-    if(this.estaAutenticado()){
+  render() {
+    const { component: ComponenteQueVeioNoParametro, ...props } = this.props
+    if (this.estaAutenticado()) {
       return <ComponenteQueVeioNoParametro {...props} />
-    }else{
+    } else {
       return <Redirect to="/login" />
     }
   }
@@ -23,13 +23,13 @@ class PrivateRoute extends React.Component {
 
 class Roteamento extends React.Component {
   render() {
-   return (
+    return (
       <Switch>
         <PrivateRoute path="/" component={HomePage} exact />
         <Route path="/login" component={LoginPage} />
-        <Route component={NotFoundPage}/>
+        <Route component={NotFoundPage} />
       </Switch>
-   );
+    );
   }
 }
 

@@ -4,20 +4,20 @@ import "../assets/css/notificacao.css";
 
 export const NotificacaoContext = createContext({
   msg: "",
-  setMsg(newMsg) {}
+  setMsg(newMsg) { }
 });
 
 export const NotificacaoContextProvider = ({ children }) => {
-  const [msg,setMsg] = useState("");
+  const [msg, setMsg] = useState("");
 
   return (
-    <NotificacaoContext.Provider value={{msg,setMsg}}>
+    <NotificacaoContext.Provider value={{ msg, setMsg }}>
       {children}
       { msg && (
-        <div className="notificacaoMsg" onAnimationEnd={ () => setMsg("")}>
+        <div className="notificacaoMsg" onAnimationEnd={() => setMsg("")}>
           {msg}
         </div>
-      )}      
+      )}
     </NotificacaoContext.Provider>
   );
 };

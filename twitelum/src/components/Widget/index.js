@@ -5,7 +5,7 @@ class Widget extends Component {
     render() {
         return (
             <div className="widget">
-                { this.props.children }
+                { this.props.children}
             </div>
         )
     }
