@@ -38,6 +38,9 @@ class HomePage extends Component {
           texto={tweetInfo.conteudo}
           key={tweetInfo._id}
           usuario={tweetInfo.usuario}
+          id={tweetInfo._id}
+          likeado={tweetInfo.likeado}
+          totalLikes={tweetInfo.totalLikes}
         />
       })
     }
