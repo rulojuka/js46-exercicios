@@ -41,6 +41,8 @@ class HomePage extends Component {
           id={tweetInfo._id}
           likeado={tweetInfo.likeado}
           totalLikes={tweetInfo.totalLikes}
+          removivel={tweetInfo.removivel}
+          removeHandler={(event) => this.removeTweet(tweetInfo._id)}
         />
       })
     }
@@ -54,6 +56,17 @@ class HomePage extends Component {
       .then((tweets) => {
         this.setState({
           tweets
+        })
+      })
+  }
+
+  removeTweet(idTweetQueVaiSerRemovido) {
+    TweetService.remove(idTweetQueVaiSerRemovido)
+      .then((response) => {
+        console.log(response)
+        const listaDeTweetsAtualizada = this.state.tweets.filter((tweet) => tweet._id !== idTweetQueVaiSerRemovido)
+        this.setState({
+          tweets: listaDeTweetsAtualizada
         })
       })
   }

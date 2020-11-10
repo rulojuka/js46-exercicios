@@ -24,6 +24,12 @@ export const TweetService = {
     const URL = `http://twitelum-api.herokuapp.com/tweets/${idDoTweet}/like?X-AUTH-TOKEN=${localStorage.getItem('TOKEN')}`
     return fetch(URL, { method: 'POST' })
       .then(response => response.json())
+  },
+
+  remove(idDoTweet) {
+    const URL = `https://twitelum-api.herokuapp.com/tweets/${idDoTweet}?X-AUTH-TOKEN=${localStorage.getItem('TOKEN')}`
+    return fetch(URL, { method: 'DELETE' })
+    .then((data) => data.json())
   }
 
 }
