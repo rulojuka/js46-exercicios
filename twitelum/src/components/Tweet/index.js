@@ -12,6 +12,9 @@ class Tweet extends Component {
         }
     }
 
+    handleClickNaAreaDeConteudo = () =>
+        this.props.onClickNaAreaDeConteudo && this.props.onClickNaAreaDeConteudo();
+
     likeHandler = () => {
         const { likeado, totalLikes } = this.state
         const idDoTweet = this.props.id
@@ -33,7 +36,8 @@ class Tweet extends Component {
                     <span className="tweet__nomeUsuario">{this.props.usuario.nome}</span>
                     <a href=""><span className="tweet__userName">@{this.props.usuario.login}</span></a>
                 </div>
-                <p className="tweet__conteudo">
+                <p className="tweet__conteudo"
+                    onClick={this.handleClickNaAreaDeConteudo}>
                     <span> {this.props.texto} </span>
                 </p>
                 <footer className="tweet__footer">
@@ -69,18 +73,20 @@ Tweet.propTypes = {
     likeado: PropTypes.bool.isRequired,
     id: PropTypes.string.isRequired,
     usuario: PropTypes.shape({
-       foto: PropTypes.string.isRequired,
-       login: PropTypes.string.isRequired,
-       nome: PropTypes.string.isRequired
+        foto: PropTypes.string.isRequired,
+        login: PropTypes.string.isRequired,
+        nome: PropTypes.string.isRequired
     }),
     texto: PropTypes.string.isRequired,
-    removeHandler: PropTypes.func.isRequired
- };
+    removeHandler: PropTypes.func.isRequired,
+    onRemove: PropTypes.func,
+    onClickNaAreaDeConteudo: PropTypes.func
+};
 
- Tweet.defaultProps = {
+Tweet.defaultProps = {
     usuario: {},
     likeado: false,
     removivel: false
- };
+};
 
 export default Tweet

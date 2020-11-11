@@ -7,15 +7,27 @@ import TrendsArea from '../../components/TrendsArea'
 import Tweet from '../../components/Tweet'
 import { TweetService } from '../../services/TweetService';
 import Helmet from 'react-helmet'
+import { Modal } from "../../components/Modal";
 
 class HomePage extends Component {
   constructor() {
     super()
     this.state = {
       novoTweet: "",
-      tweets: []
+      tweets: [],
+      tweetAtivoNoModal: {},
     }
   }
+
+  abreModal = tweetQueVaiProModal => {
+    this.setState({
+      tweetAtivoNoModal: tweetQueVaiProModal
+    }, () => {
+      console.log(this.state.tweetAtivoNoModal);
+    });
+  };
+
+  fechaModal = () => this.setState({ tweetAtivoNoModal: {} });
 
   adicionaTweet = (infosDoEvento) => {
     infosDoEvento.preventDefault()
@@ -43,6 +55,7 @@ class HomePage extends Component {
           totalLikes={tweetInfo.totalLikes}
           removivel={tweetInfo.removivel}
           removeHandler={(event) => this.removeTweet(tweetInfo._id)}
+          onClickNaAreaDeConteudo={() => this.abreModal(tweetInfo)}
         />
       })
     }
@@ -68,6 +81,7 @@ class HomePage extends Component {
         this.setState({
           tweets: listaDeTweetsAtualizada
         })
+        this.fechaModal()
       })
   }
 
@@ -123,6 +137,14 @@ class HomePage extends Component {
             </Widget>
           </Dashboard>
         </div>
+        <Modal
+          isAberto={Boolean(this.state.tweetAtivoNoModal._id)}
+          onFechando={this.fechaModal}
+        >
+          {() => (
+            this.renderTweets([this.state.tweetAtivoNoModal])
+          )}
+        </Modal>
       </Fragment>
     );
   }
