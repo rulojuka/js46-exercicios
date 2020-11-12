@@ -8,8 +8,11 @@ import Tweet from '../../components/Tweet'
 import { TweetService } from '../../services/TweetService';
 import Helmet from 'react-helmet'
 import { Modal } from "../../components/Modal";
+import { ReactReduxContext } from 'react-redux'
 
 class HomePage extends Component {
+  static contextType=ReactReduxContext
+
   constructor() {
     super()
     this.state = {
@@ -65,15 +68,16 @@ class HomePage extends Component {
   }
 
   componentDidMount() {
-    window.store.subscribe(() => {
+    const store = this.context.store
+    store.subscribe(() => {
       this.setState({
-        tweets: window.store.getState()
+        tweets: store.getState()
       })
     })
 
     TweetService.busca()
       .then((tweets) => {
-        window.store.dispatch({ type: 'CARREGA_TWEETS', tweets })
+        store.dispatch({ type: 'CARREGA_TWEETS', tweets })
       })
   }
 
