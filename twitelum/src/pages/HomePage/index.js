@@ -4,34 +4,31 @@ import NavMenu from '../../components/NavMenu'
 import Dashboard from '../../components/Dashboard'
 import Widget from '../../components/Widget'
 import TrendsArea from '../../components/TrendsArea'
-import Tweet from '../../components/Tweet'
-import { TweetService } from '../../services/TweetService';
 import Helmet from 'react-helmet'
-import { Modal } from "../../components/Modal";
 import { ReactReduxContext } from 'react-redux'
 import { TweetsThunkActions } from '../../store/ducks/tweets';
+import TweetsContainer from '../../containers/TweetsContainer';
 
 class HomePage extends Component {
-  static contextType=ReactReduxContext
+  static contextType = ReactReduxContext
 
   constructor() {
     super()
     this.state = {
       novoTweet: "",
-      tweets: [],
-      tweetAtivoNoModal: {},
+      totalTweets: 0
     }
   }
 
-  abreModal = tweetQueVaiProModal => {
-    this.setState({
-      tweetAtivoNoModal: tweetQueVaiProModal
-    }, () => {
-      console.log(this.state.tweetAtivoNoModal);
-    });
-  };
-
-  fechaModal = () => this.setState({ tweetAtivoNoModal: {} });
+  componentDidMount() {
+    const store = this.context.store
+    store.subscribe(() => {
+      this.setState({
+        totalTweets: store.getState().tweets.data.length
+      })
+    })
+    store.dispatch(TweetsThunkActions.carregaTweets())
+  }
 
   adicionaTweet = infosDoEvento => {
     infosDoEvento.preventDefault();
@@ -45,53 +42,12 @@ class HomePage extends Component {
     }
   };
 
-  renderTweets = (tweets) => {
-    if (tweets.length > 0) {
-      return tweets.map((tweetInfo) => {
-        return <Tweet
-          texto={tweetInfo.conteudo}
-          key={tweetInfo._id}
-          usuario={tweetInfo.usuario}
-          id={tweetInfo._id}
-          likeado={tweetInfo.likeado}
-          totalLikes={tweetInfo.totalLikes}
-          removivel={tweetInfo.removivel}
-          removeHandler={(event) => this.removeTweet(tweetInfo._id)}
-          onClickNaAreaDeConteudo={() => this.abreModal(tweetInfo)}
-        />
-      })
-    }
-    else {
-      return <h3>Crie um novo tweet!</h3>
-    }
-  }
-
-  componentDidMount() {
-    const store = this.context.store
-    store.subscribe(() => {
-      this.setState({
-        tweets: store.getState().tweets.data
-      })
-    })
-
-    store.dispatch(TweetsThunkActions.carregaTweets())
-
-  }
-
-  removeTweet(idTweetQueVaiSerRemovido) {
-    this.context.store
-      .dispatch(TweetsThunkActions.remove(idTweetQueVaiSerRemovido))
-      .then(() => {
-        this.fechaModal();
-      });
-  }
-
   render() {
     return (
       <Fragment>
         <Helmet>
           <title>
-            Twitelum - ({`${this.state.tweets.length}`})
+            Twitelum - ({`${this.state.totalTweets}`})
           </title>
         </Helmet>
         <Cabecalho>
@@ -132,20 +88,10 @@ class HomePage extends Component {
           </Dashboard>
           <Dashboard posicao="centro">
             <Widget>
-              <div className="tweetsArea">
-                {this.renderTweets(this.state.tweets)}
-              </div>
+              <TweetsContainer />
             </Widget>
           </Dashboard>
         </div>
-        <Modal
-          isAberto={Boolean(this.state.tweetAtivoNoModal._id)}
-          onFechando={this.fechaModal}
-        >
-          {() => (
-            this.renderTweets([this.state.tweetAtivoNoModal])
-          )}
-        </Modal>
       </Fragment>
     );
   }
