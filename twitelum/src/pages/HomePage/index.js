@@ -33,19 +33,17 @@ class HomePage extends Component {
 
   fechaModal = () => this.setState({ tweetAtivoNoModal: {} });
 
-  adicionaTweet = (infosDoEvento) => {
-    infosDoEvento.preventDefault()
-
+  adicionaTweet = infosDoEvento => {
+    infosDoEvento.preventDefault();
     if (this.state.novoTweet.length > 0) {
-      TweetService.adiciona(this.state.novoTweet)
-        .then((tweetVindoDoServidor) => {
-          this.setState({
-            tweets: [tweetVindoDoServidor, ...this.state.tweets],
-            novoTweet: ""
-          })
-        })
+      const conteudoDoTweet = this.state.novoTweet;
+      this.context.store
+        .dispatch(TweetsThunkActions.addTweet(conteudoDoTweet))
+        .then(() => {
+          this.setState({ novoTweet: "" });
+        });
     }
-  }
+  };
 
   renderTweets = (tweets) => {
     if (tweets.length > 0) {

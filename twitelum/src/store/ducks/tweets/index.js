@@ -16,6 +16,13 @@ export const TweetsThunkActions = {
           dispatch({ type: "tweets/CARREGA_FALHOU" });
         });
     };
+  },
+
+  addTweet: conteudo => {
+    return async dispatch => {
+      const response = await TweetService.adiciona(conteudo);
+      dispatch({ type: "tweets/ADD", payload: { tweet: response } });
+    };
   }
 };
 
@@ -45,6 +52,14 @@ export function tweetsReducer(state = INITIAL_STATE, action = {}) {
     return {
       ...state,
       data: [],
+      error: true
+    };
+  }
+  
+  if (action.type === "tweets/ADD") {
+    return {
+      ...state,
+      data: [action.payload.tweet, ...state.data],
       error: true
     };
   }
