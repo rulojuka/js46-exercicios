@@ -23,7 +23,18 @@ export const TweetsThunkActions = {
       const response = await TweetService.adiciona(conteudo);
       dispatch({ type: "tweets/ADD", payload: { tweet: response } });
     };
+  },
+
+  remove: idTweetQueVaiSerRemovido => {
+    return async dispatch => {
+      await TweetService.remove(idTweetQueVaiSerRemovido);
+      dispatch({
+        type: "tweets/REMOVE",
+        payload: { idDoTweet: idTweetQueVaiSerRemovido }
+      });
+    };
   }
+
 };
 
 const INITIAL_STATE = {
@@ -55,12 +66,22 @@ export function tweetsReducer(state = INITIAL_STATE, action = {}) {
       error: true
     };
   }
-  
+
   if (action.type === "tweets/ADD") {
     return {
       ...state,
       data: [action.payload.tweet, ...state.data],
       error: true
+    };
+  }
+
+  if (action.type === "tweets/REMOVE") {
+    const listaDeTweetsAtualizada = state.data.filter(
+      tweet => tweet._id !== action.payload.idDoTweet
+    );
+    return {
+      ...state,
+      data: listaDeTweetsAtualizada
     };
   }
 
