@@ -26,12 +26,12 @@ class TweetsContainer extends Component {
 
     store.dispatch(TweetsThunkActions.carregaTweets())
   }
-  
+
   abreModal = idDoTweetQueVaiProModal => {
     const store = this.context.store;
     store.dispatch(TweetsThunkActions.setTweetAtivo(idDoTweetQueVaiProModal));
   };
-  
+
   fechaModal = () => {
     const store = this.context.store;
     store.dispatch(TweetsThunkActions.unsetTweetAtivo());
@@ -50,6 +50,7 @@ class TweetsContainer extends Component {
           removivel={tweetInfo.removivel}
           removeHandler={(event) => this.removeTweet(tweetInfo._id)}
           onClickNaAreaDeConteudo={() => this.abreModal(tweetInfo._id)}
+          likeHandler={() => this.likeHandler(tweetInfo._id)}
         />
       })
     }
@@ -65,6 +66,11 @@ class TweetsContainer extends Component {
         this.fechaModal();
       });
   }
+
+  likeHandler = idDoTweet => {
+    this.context.store.dispatch(TweetsThunkActions.like(idDoTweet));
+  };
+
 
   render() {
     return (
